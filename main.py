@@ -109,26 +109,26 @@ while True:
                     scale = 0
                     dx = 0
                     dy = 0
-                    if (menuChoice == 0):
-                        scale = 55
-                        dx = 10
-                        dy = 80
-                    if (menuChoice == 1):
-                        scale = 45
-                        dx = 25
+                    if(menuChoice == 0):
+                        scale = 90
+                        dx = 5
                         dy = 40
-                    if (menuChoice == 2):
+                    if(menuChoice == 1):
+                        scale = 85
+                        dx = 5
+                        dy = 80
+                    if(menuChoice == 2):
                         scale = 55
                         dx = 20
-                        dy = 80
-                    if (menuChoice == 3):
+                        dy = 60
+                    if(menuChoice == 3):
+                        scale = 70
+                        dx = 15
+                        dy = 30
+                    if(menuChoice == 4):
                         scale = 80
                         dx = 10
                         dy = 30
-                    if (menuChoice == 4):
-                        scale = 100
-                        dx = 0
-                        dy = -50
 
                     cameraFeedImg = showObjectOnface(
                         cameraFeedImg, menuImages[menuChoice], xLoc, yLoc, dist, scale, dx, dy)
