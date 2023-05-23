@@ -1,0 +1,5 @@
+TA1: Overlay the filter on the face
+
+TA2: Scale single image wrt face distance
+
+TA3: Scale and position each filter individually
