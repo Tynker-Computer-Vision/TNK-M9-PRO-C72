@@ -10,9 +10,10 @@ cap.set(3, 1280)
 cap.set(4, 720)
 
 menuImages =[]
-path = "Images/menu"
+path = "filters"
 pathList = os.listdir(path)
 
+pathList.sort()
 for x, pathImg in enumerate(pathList):
     img = (cv2.imread(path+"/"+pathImg, cv2.IMREAD_UNCHANGED))
     img= cv2.resize(img, (100, 100))
