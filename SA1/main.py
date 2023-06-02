@@ -66,25 +66,26 @@ while True:
                 isImageSelected = False
 
         
-        if (isImageSelected):
-            image = cv2.resize(menuImages[menuChoice], (100, 100))
-            cameraFeedImg = cvzone.overlayPNG(cameraFeedImg, image, [int(indexFingerTop[0]), int(indexFingerTop[1])])
     except Exception as e:
-        print(e)
+            print(e)
 
     cameraFeedImg, faces = faceDetector.findFaceMesh(cameraFeedImg, draw= False)
-                
-
 
     try:
         # Store the x and y coordinates for the landmark point where filter is to be placed
         for face in faces: 
             xLoc= face[21][0]
             yLoc= face[21][1]
-
-            # Overlaying the filter image over the face
-            cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, menuImages[menuChoice], [xLoc, yLoc])
-
+            
+            if(menuChoice > -1):
+                if (isImageSelected):
+                    image = cv2.resize(menuImages[menuChoice], (100, 100))
+                    cameraFeedImg = cvzone.overlayPNG(cameraFeedImg, image, [int(indexFingerTop[0]), int(indexFingerTop[1])])
+                else:
+                    # Resize the image to 100, 100
+                    filterImg = cv2.resize(menuImages[menuChoice], (100, 100))              
+                    # Overlaying the filter image over the face
+                    cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, filterImg, [xLoc, yLoc])
 
 
     except Exception as e:
