@@ -15,6 +15,7 @@ menuImages = []
 path = "filters"
 pathList = os.listdir(path)
 pathList.sort()
+menuChoice = -1
 
 for pathImg in pathList:
     img = (cv2.imread(path + "/" + pathImg, cv2.IMREAD_UNCHANGED))
@@ -43,32 +44,24 @@ while True:
     hands = handsDetector[0]
     cameraFeedImg = handsDetector[1]
 
-    try:
-        if hands:
-            hand1 = hands[0]
-            lmList1 = hand1["lmList"]  
-            indexFingerTop = lmList1[8]
-            indexFingerBottom = lmList1[6]
+    
+    if hands:
+        hand1 = hands[0]
+        lmList1 = hand1["lmList"]  
+        indexFingerTop = lmList1[8]
+        indexFingerBottom = lmList1[6]
 
-            if (indexFingerTop[1] < xIncrement):
-                i = 0
-                while (xIncrement*i <= wWidth):
-                    if (indexFingerTop[0] < xIncrement*i):
-                        menuChoice = i-1
-                        isImageSelected = True
-                        break
-                    i = i+1
+        if (indexFingerTop[1] < xIncrement):
+            i = 0
+            while (xIncrement*i <= wWidth):
+                if (indexFingerTop[0] < xIncrement*i):
+                    menuChoice = i-1
+                    isImageSelected = True
+                    break
+                i = i+1
 
-            
-            if (indexFingerTop[1] > indexFingerBottom[1]):
-                isImageSelected = False
-
-        
-        if (isImageSelected):
-            image = cv2.resize(menuImages[menuChoice], (100, 100))
-            cameraFeedImg = cvzone.overlayPNG(cameraFeedImg, image, [int(indexFingerTop[0]), int(indexFingerTop[1])])
-    except Exception as e:
-        print(e)
+        if (indexFingerTop[1] > indexFingerBottom[1]):
+            isImageSelected = False
 
     cameraFeedImg, faces = faceDetector.findFaceMesh(cameraFeedImg, draw= False)
 
@@ -76,21 +69,28 @@ while True:
         for face in faces: 
             xLoc= face[21][0]
             yLoc= face[21][1]
+             
+            if(menuChoice > -1): 
+                if (isImageSelected):
+                    image = cv2.resize(menuImages[menuChoice], (100, 100))
+                    cameraFeedImg = cvzone.overlayPNG(cameraFeedImg, image, [int(indexFingerTop[0]), int(indexFingerTop[1])])
+                else:   
+                    # Calculate dist i.e width of the face
+                    dist = math.dist(face[21], face[251])
 
-            # Calculate dist i.e width of the face
-            dist = math.dist(face[21], face[251])
+                    # Create scale variable with value 90
+                    scale = 90
 
-            # Create scale variable with value 90
-            scale = 90
+                    # Calculate the resizefactor
+                    resizefactor = dist/scale
 
-            # Calculate the resizefactor
-            resizefactor = dist/scale
+                    filterImg = cv2.resize(menuImages[menuChoice], (100, 100))
 
-            # Resize the filterImage base on resizeFactor
-            filterImg = cv2.resize(menuImages[menuChoice], (0, 0), fx = resizefactor, fy = resizefactor)
-            
-            # Replace the menuImage[menuChoice] with filterImage
-            cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, filterImg, [xLoc, yLoc])
+                    # Resize the filterImage base on resizeFactor
+                    filterImg = cv2.resize(filterImg, (0, 0), fx = resizefactor, fy = resizefactor)
+                    
+                    # Replace the menuImage[menuChoice] with filterImage
+                    cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, filterImg, [xLoc, yLoc])
 
 
 
