@@ -62,11 +62,6 @@ while True:
             
             if (indexFingerTop[1] > indexFingerBottom[1]):
                 isImageSelected = False
-
-        
-        if (isImageSelected):
-            image = cv2.resize(menuImages[menuChoice], (100, 100))
-            cameraFeedImg = cvzone.overlayPNG(cameraFeedImg, image, [int(indexFingerTop[0]), int(indexFingerTop[1])])
     except Exception as e:
         print(e)
 
@@ -79,8 +74,8 @@ while True:
 
             if(menuChoice > -1):
                 if(isImageSelected): 
-                    imgX= cv2.resize(menuImages[menuChoice], (0, 0), fx = 1, fy = 1)
-                    cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, imgX, [int(indexFingerTop[0]), int(indexFingerTop[1])])
+                    image = cv2.resize(menuImages[menuChoice], (100, 100))
+                    cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, image, [int(indexFingerTop[0]), int(indexFingerTop[1])])
                 else:
                     dist = math.dist(face[21], face[251])
 
@@ -118,10 +113,10 @@ while True:
                     # Calculate the xLoc and Yloc based on resizeFactor and dx,dy. 
                     xLoc = int(xLoc - (resizefactor*dx))
                     yLoc = int(yLoc - (resizefactor * dy))
-
-                    filterImg = cv2.resize(menuImages[menuChoice], (0, 0), fx = resizefactor, fy = resizefactor)
+                    filterImg = cv2.resize(menuImages[menuChoice], (100, 100))
+                    filterImg = cv2.resize(filterImg, (0, 0), fx = resizefactor, fy = resizefactor)
                     
-                    cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, menuImages[menuChoice], [xLoc, yLoc])
+                    cameraFeedImg= cvzone.overlayPNG(cameraFeedImg, filterImg, [xLoc, yLoc])
 
 
 
